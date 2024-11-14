@@ -21,7 +21,7 @@ class Cell:
         self._win = win
         self.wall = Wall.ALL
         
-    def draw(self, x1, y1, x2, y2):
+    def draw(self, x1 : float, y1 : float, x2 : float, y2 : float):
         # x1, y1 left top
         # x2, y2 right bottom
         self._x1 = x1
@@ -38,3 +38,12 @@ class Cell:
                 end = points[(i+1) % 4]
                 cur_line = Line(Point(*start), Point(*end))
                 self._win.draw_line(cur_line)
+        
+    def draw_move(self, to_cell : 'Cell', undo : bool = False):
+        center = self._get_center()
+        to_cell_center = to_cell._get_center()
+        color = "gray" if undo else "red"
+        self._win.draw_line(Line(center, to_cell_center), color)
+
+    def _get_center(self):
+        return Point((self._x1 + self._x2) / 2, (self._y1 + self._y2) / 2)
