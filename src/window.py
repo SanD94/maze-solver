@@ -16,7 +16,7 @@ class Window:
         self.__root.update()
     
 
-    def draw_line(self, line : Line, fill_color : str):
+    def draw_line(self, line : Line, fill_color : str = "black"):
         line.draw(self.__canvas, fill_color)
 
     def wait_for_close(self):

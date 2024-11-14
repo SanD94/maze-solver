@@ -1,11 +1,23 @@
 from window import Window
-from drawing_utils import Line, Point
+from cell import Cell, Wall
 
 if __name__ == "__main__":
     win = Window(800, 600)
-    line0 = Line(Point(100.1, 200.2), Point(200.2, 200.2))
-    line1 = Line(Point(200.2, 200.2), Point(200.2, 300.6))
-    win.draw_line(line0, "black")
-    win.draw_line(line1, "red")
+
+    c = Cell(win)
+    c.wall ^= Wall.LEFT
+    c.draw(50, 50, 100, 100)
+
+    c = Cell(win)
+    c.wall ^= Wall.RIGHT
+    c.draw(125, 125, 200, 200)
+
+    c = Cell(win)
+    c.wall ^= Wall.BOTTOM
+    c.draw(225, 225, 250, 250)
+
+    c = Cell(win)
+    c.wall ^= Wall.TOP
+    c.draw(300, 300, 500, 500)
 
     win.wait_for_close()
