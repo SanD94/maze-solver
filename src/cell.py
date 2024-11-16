@@ -13,7 +13,7 @@ class Wall(Flag):
 
 
 class Cell:
-    def __init__(self, win : Window):
+    def __init__(self, win : Window | None = None):
         self._x1 = None 
         self._x2 = None 
         self._y1 = None 
@@ -22,6 +22,8 @@ class Cell:
         self.wall = Wall.ALL
         
     def draw(self, x1 : float, y1 : float, x2 : float, y2 : float):
+        if self._win is None:
+            return
         # x1, y1 left top
         # x2, y2 right bottom
         self._x1 = x1

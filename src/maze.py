@@ -8,10 +8,9 @@ class Maze:
             x1 : float, y1 : float,
             num_rows : int, num_cols : int,
             cell_size_x : float, cell_size_y : float,
-            win : Window
+            win : Window | None = None
         ):
-        if win is None:
-            raise ValueError("There is no window to render!")
+        
         self._x1 = x1
         self._y1 = y1
         self._num_rows = num_rows
@@ -24,15 +23,15 @@ class Maze:
     def _create_cells(self):
         self._cells : list[list[Cell]] = []
 
-        for i in range(self._num_rows):
+        for i in range(self._num_cols):
             cur_col : list[Cell] = []
-            for j in range(self._num_cols):
+            for j in range(self._num_rows):
                 cell = Cell(self._win)
                 cur_col.append(cell)
             self._cells.append(cur_col)
         
-        for i in range(self._num_rows):
-            for j in range(self._num_cols):
+        for i in range(self._num_cols):
+            for j in range(self._num_rows):
                 self._draw_cell(i, j)
     
     def _draw_cell(self, i : int, j : int):
@@ -46,6 +45,8 @@ class Maze:
         self._animate()
 
     def _animate(self):
+        if self._win is None:
+            return
         self._win.redraw()
         sleep(0.05)
         
