@@ -1,7 +1,6 @@
 import unittest
 from maze import Maze
 from cell import Wall
-from functools import reduce
 
 
 class Tests(unittest.TestCase):
@@ -25,13 +24,13 @@ class Tests(unittest.TestCase):
             m1._cells[-1][-1].wall & Wall.BOTTOM,
             Wall.NONE
         )
-        visited_all = True
+        visited_all = False
         for i in range(len(m1._cells)):
             for j in range(len(m1._cells[i])):
-                visited_all &= m1._cells[i][j].visited
+                visited_all |= m1._cells[i][j].visited
         self.assertEqual(
             visited_all,
-            True
+            False
         )
 
 
@@ -57,13 +56,13 @@ class Tests(unittest.TestCase):
             Wall.NONE
         )
 
-        visited_all = True
+        visited_all = False
         for i in range(len(m1._cells)):
             for j in range(len(m1._cells[i])):
-                visited_all &= m1._cells[i][j].visited
+                visited_all |= m1._cells[i][j].visited
         self.assertEqual(
             visited_all,
-            True
+            False
         )
 
 
