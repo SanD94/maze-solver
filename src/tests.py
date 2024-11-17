@@ -1,5 +1,6 @@
 import unittest
 from maze import Maze
+from cell import Wall
 
 
 class Tests(unittest.TestCase):
@@ -15,6 +16,14 @@ class Tests(unittest.TestCase):
             len(m1._cells[0]),
             num_rows,
         )
+        self.assertEqual(
+            Wall.ALL ^ Wall.TOP,
+            m1._cells[0][0].wall
+        )
+        self.assertEqual(
+            Wall.ALL ^ Wall.BOTTOM,
+            m1._cells[-1][-1].wall
+        )
     
     def test_maze_create_cells_large(self):
         num_cols = 16
@@ -27,6 +36,14 @@ class Tests(unittest.TestCase):
         self.assertEqual(
             len(m1._cells[0]),
             num_rows,
+        )
+        self.assertEqual(
+            Wall.ALL ^ Wall.TOP,
+            m1._cells[0][0].wall
+        )
+        self.assertEqual(
+            Wall.ALL ^ Wall.BOTTOM,
+            m1._cells[-1][-1].wall
         )
 
 

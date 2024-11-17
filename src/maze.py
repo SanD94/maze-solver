@@ -1,4 +1,4 @@
-from cell import Cell
+from cell import Cell, Wall
 from window import Window
 from time import sleep
 
@@ -19,6 +19,7 @@ class Maze:
         self._cell_size_y = cell_size_y
         self._win = win
         self._create_cells()
+        self._break_entrance_and_exit()
     
     def _create_cells(self):
         self._cells : list[list[Cell]] = []
@@ -43,6 +44,14 @@ class Maze:
         y2 = self._y1 + self._cell_size_y * (j + 1)
         self._cells[i][j].draw(x1, y1, x2, y2)
         self._animate()
+
+    def _break_entrance_and_exit(self):
+        self._cells[0][0].wall ^= Wall.TOP
+        self._cells[-1][-1].wall ^= Wall.BOTTOM
+
+        self._draw_cell(0, 0)
+        self._draw_cell(self._num_cols - 1, self._num_rows - 1)
+        
 
     def _animate(self):
         if self._win is None:

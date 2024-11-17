@@ -35,11 +35,12 @@ class Cell:
         points = [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
 
         for i, wall in enumerate(walls):
-            if self.wall & wall:
-                start = points[i]
-                end = points[(i+1) % 4]
-                cur_line = Line(Point(*start), Point(*end))
-                self._win.draw_line(cur_line)
+            start = points[i]
+            end = points[(i+1) % 4]
+            cur_line = Line(Point(*start), Point(*end))
+            color =  "black" if self.wall & wall else "white"
+
+            self._win.draw_line(cur_line, color)
         
     def draw_move(self, to_cell : 'Cell', undo : bool = False):
         center = self._get_center()
