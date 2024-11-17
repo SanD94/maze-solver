@@ -96,4 +96,35 @@ class Maze:
             return
         self._win.redraw()
         sleep(0.05)
+
+    def solve(self):
+        return self._solve(0, 0)
+    
+    def _solve(self, i : int, j : int):
+        self._animate()
+        self._cells[i][j].visited = True
+        if (
+            i == self._num_cols - 1 and 
+            j == self._num_rows - 1
+        ):
+            return True
+        adjs = [(0,-1), (1,0), (0,1), (-1,0)]
+        walls = [Wall.TOP, Wall.RIGHT, Wall.BOTTOM, Wall.LEFT]
+        for index, adj in enumerate(adjs):
+            n_i, n_j = i + adj[0], j + adj[1]
+            if  (
+                0 <= n_i and n_i < self._num_cols and
+                0 <= n_j and n_j < self._num_rows and
+                (self._cells[i][j].wall & walls[index] is Wall.NONE) and
+                not self._cells[n_i][n_j].visited
+                ):
+                self._cells[i][j].draw_move(self._cells[n_i][n_j])
+                val = self._solve(n_i, n_j)
+                if val:
+                    return True
+                self._cells[i][j].draw_move(self._cells[n_i][n_j], True)
+        return False
+                
+        
+
         
