@@ -1,6 +1,7 @@
 from cell import Cell, Wall
 from window import Window
 from time import sleep
+import random
 
 class Maze:
     def __init__(
@@ -8,7 +9,8 @@ class Maze:
             x1 : float, y1 : float,
             num_rows : int, num_cols : int,
             cell_size_x : float, cell_size_y : float,
-            win : Window | None = None
+            win : Window | None = None,
+            seed : int | None = None
         ):
         
         self._x1 = x1
@@ -18,8 +20,12 @@ class Maze:
         self._cell_size_x = cell_size_x
         self._cell_size_y = cell_size_y
         self._win = win
+        self._random = random.Random(seed)
+
         self._create_cells()
         self._break_entrance_and_exit()
+        self._break_walls_r(0, 0)
+        
     
     def _create_cells(self):
         self._cells : list[list[Cell]] = []
@@ -51,6 +57,34 @@ class Maze:
 
         self._draw_cell(0, 0)
         self._draw_cell(self._num_cols - 1, self._num_rows - 1)
+
+    # i col, j row
+    def _break_walls_r(self, i : int, j : int):
+        self._cells[i][j].visited = True
+        adjs = [(0,-1), (1,0), (0,1), (-1,0)]
+        walls = [Wall.TOP, Wall.RIGHT, Wall.BOTTOM, Wall.LEFT]
+    
+        while True:
+            to_visit : list[tuple[int, int, int]] = []
+            for index, adj in enumerate(adjs):
+                n_i, n_j = i + adj[0], j + adj[1]
+                if  (
+                    0 <= n_i and n_i < self._num_cols and
+                    0 <= n_j and n_j < self._num_rows and
+                    not self._cells[n_i][n_j].visited
+                    ):
+                    to_visit.append((n_i, n_j, index))
+            if to_visit == []:
+                self._draw_cell(i, j)
+                return
+            visit_index = self._random.randrange(len(to_visit))
+            n_i, n_j, wall_index = to_visit[visit_index]
+            self._cells[i][j].wall ^= walls[wall_index]
+            self._cells[n_i][n_j].wall ^= walls[(wall_index + 2) % 4]
+
+            self._break_walls_r(n_i, n_j)
+
+
         
 
     def _animate(self):

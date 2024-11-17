@@ -19,6 +19,7 @@ class Cell:
         self._y1 = None 
         self._y2 = None 
         self._win = win
+        self.visited = False
         self.wall = Wall.ALL
         
     def draw(self, x1 : float, y1 : float, x2 : float, y2 : float):

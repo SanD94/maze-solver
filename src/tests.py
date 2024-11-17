@@ -1,6 +1,7 @@
 import unittest
 from maze import Maze
 from cell import Wall
+from functools import reduce
 
 
 class Tests(unittest.TestCase):
@@ -17,13 +18,23 @@ class Tests(unittest.TestCase):
             num_rows,
         )
         self.assertEqual(
-            Wall.ALL ^ Wall.TOP,
-            m1._cells[0][0].wall
+            m1._cells[0][0].wall & Wall.TOP,
+            Wall.NONE
         )
         self.assertEqual(
-            Wall.ALL ^ Wall.BOTTOM,
-            m1._cells[-1][-1].wall
+            m1._cells[-1][-1].wall & Wall.BOTTOM,
+            Wall.NONE
         )
+        visited_all = True
+        for i in range(len(m1._cells)):
+            for j in range(len(m1._cells[i])):
+                visited_all &= m1._cells[i][j].visited
+        self.assertEqual(
+            visited_all,
+            True
+        )
+
+
     
     def test_maze_create_cells_large(self):
         num_cols = 16
@@ -38,13 +49,23 @@ class Tests(unittest.TestCase):
             num_rows,
         )
         self.assertEqual(
-            Wall.ALL ^ Wall.TOP,
-            m1._cells[0][0].wall
+            m1._cells[0][0].wall & Wall.TOP,
+            Wall.NONE,
         )
         self.assertEqual(
-            Wall.ALL ^ Wall.BOTTOM,
-            m1._cells[-1][-1].wall
+            m1._cells[-1][-1].wall & Wall.BOTTOM,
+            Wall.NONE
         )
+
+        visited_all = True
+        for i in range(len(m1._cells)):
+            for j in range(len(m1._cells[i])):
+                visited_all &= m1._cells[i][j].visited
+        self.assertEqual(
+            visited_all,
+            True
+        )
+
 
 
 if __name__ == "__main__":
